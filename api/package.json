@@ -1,11 +1,11 @@
 {
-  "name": "fileuploader",
+  "name": "blogapi",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx src/app.ts"
+    "dev": "tsx --watch src/app.ts"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +27,7 @@
     "@prisma/adapter-pg": "^7.0.0",
     "@prisma/client": "^7.0.0",
     "@quixo3/prisma-session-store": "^3.1.13",
+    "bcryptjs": "^3.0.3",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "express-session": "^1.18.2",

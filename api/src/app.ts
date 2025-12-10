@@ -1,27 +1,19 @@
 import express from "express";
-import session from "express-session";
 import passport from "passport";
 import { prisma } from "./lib/prisma";
-import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import jwt from "jsonwebtoken";
+import { userRouter } from "./routers/userRouter";
+import { postRouter } from "./routers/postRouter";
+
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || "changeme",
-    resave: false,
-    saveUninitialized: false,
-    store: new PrismaSessionStore(prisma, {
-      checkPeriod: 2 * 60 * 1000,
-    }),
-  })
-);
 
-app.use(passport.initialize());
-app.use(passport.session());
+
+//app.use(passport.initialize());
+//app.use(passport.session());
 
 // placeholder
 passport.serializeUser((user: any, done) => done(null, user.id));
@@ -39,12 +31,16 @@ app.get("/", (_req, res) => {
 });
 
 
+app.use("/api/users", userRouter);
+app.use("api/posts", postRouter);
+
 
 app.get('/api', (req, res) => {
   res.json({
     message: "Welcome to API"
   });
 });
+
 
 app.post('/api/posts', verifytoken, (req, res) => {
   jwt.verify(req.token, "secret", (err, authData) =>{
