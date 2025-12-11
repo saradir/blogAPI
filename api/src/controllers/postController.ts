@@ -9,7 +9,7 @@ export async function show(req, res){
 }
 
 export async function create(req, res){
-    return;
+    return res.status(200).json({success: "wow"});
 }
 export async function edit(req, res){
     return;

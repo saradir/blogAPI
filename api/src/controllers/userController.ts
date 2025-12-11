@@ -27,7 +27,7 @@ export async function create(req, res){
 
             }       
         });
-        res.json({
+        res.status(200).json({
             success: true,
         })
         } catch (err){

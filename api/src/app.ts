@@ -1,9 +1,10 @@
 import express from "express";
-import passport from "passport";
+import passport from "./config/passport"
 import { prisma } from "./lib/prisma";
 import jwt from "jsonwebtoken";
 import { userRouter } from "./routers/userRouter";
 import { postRouter } from "./routers/postRouter";
+import { localLogin } from "./middleware/localLogin";
 
 const app = express();
 
@@ -12,19 +13,8 @@ app.use(express.json());
 
 
 
-//app.use(passport.initialize());
-//app.use(passport.session());
+app.use(passport.initialize());
 
-// placeholder
-passport.serializeUser((user: any, done) => done(null, user.id));
-passport.deserializeUser(async (id: number, done) => {
-  try {
-    const user = await prisma.user.findUnique({ where: { id } });
-    done(null, user);
-  } catch (e) {
-    done(e);
-  }
-});
 
 app.get("/", (_req, res) => {
   res.send("Template working");
@@ -32,7 +22,7 @@ app.get("/", (_req, res) => {
 
 
 app.use("/api/users", userRouter);
-app.use("api/posts", postRouter);
+app.use("/api/posts", postRouter);
 
 
 app.get('/api', (req, res) => {
@@ -42,47 +32,21 @@ app.get('/api', (req, res) => {
 });
 
 
-app.post('/api/posts', verifytoken, (req, res) => {
-  jwt.verify(req.token, "secret", (err, authData) =>{
-    if(err){
-      res.sendStatus(403);
-    } else {
-      res.json({
-      message: 'Post created',
-      authData
-    });
-    }
-
-  })
-
-});
-
-app.post('/api/login', (req, res) =>{
-
-  const user = {
-    id :1,
-    username: "Joe"
-  }
-  jwt.sign({ user}, "secret", (error, token) => {
+app.post('/api/login', localLogin, (req, res) => {
+  const payload = {
+    id: req.user.id,
+    email: req.user.email
+  };
+  jwt.sign(payload, process.env.JWT_SECRET, (error, token) => {
     res.json({
+      success: true,
       token
     });
   });
 });
 
 
-//
-function verifytoken (req, res, next){
-  const bearerHeader = req.headers["authorization"];
-  if(typeof bearerHeader !== "undefined"){
-    const bearer = bearerHeader.split(' ')[1];
-    req.token = bearer;
-    next();
-  } else {
-    res.json(bearerHeader);
-  }
-}
-app.listen(5000, () => console.log('Server started on 5000'));
+app.listen(3000, () => console.log('Server started on 3000'));
 
 export default app;
 
