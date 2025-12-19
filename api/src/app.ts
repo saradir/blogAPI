@@ -38,7 +38,7 @@ app.post('/api/login', localLogin, (req, res) => {
     email: req.user.email
   };
   jwt.sign(payload, process.env.JWT_SECRET, (error, token) => {
-    res.json({
+    return res.status(200).json({
       success: true,
       token
     });
