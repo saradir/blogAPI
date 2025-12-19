@@ -1,10 +1,10 @@
 import express from "express";
 import passport from "./config/passport"
-import { prisma } from "./lib/prisma";
 import jwt from "jsonwebtoken";
 import { userRouter } from "./routers/userRouter";
 import { postRouter } from "./routers/postRouter";
 import { localLogin } from "./middleware/localLogin";
+import { errorHandler } from "./middleware/errorMiddleware";
 
 const app = express();
 
@@ -45,6 +45,7 @@ app.post('/api/login', localLogin, (req, res) => {
   });
 });
 
+app.use(errorHandler);
 
 app.listen(3000, () => console.log('Server started on 3000'));
 
