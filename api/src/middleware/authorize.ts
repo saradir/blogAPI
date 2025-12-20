@@ -32,7 +32,6 @@ export const requireAdmin =  (req, res, next) =>{
 }
 
 export const canModifyComment = (req, res, next) => {
-
     if(req.user.isAdmin)  return next();
 
     if(req.user.id !== req.comment.userId){

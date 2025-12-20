@@ -6,7 +6,6 @@ import { prisma } from "../lib/prisma";
 
 export async function loadComment(req, res, next, commentId) {
     const id = Number(commentId);
-
     if(Number.isNaN(id)){
         return res.status(400).json({error: {message: "Invalid comment id"}})
     }

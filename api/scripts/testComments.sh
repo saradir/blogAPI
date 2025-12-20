@@ -42,7 +42,7 @@ echo "== Show comment =="
 curl -s "$BASE_URL/api/comments/$COMMENT_ID" | jq .
 
 echo "== Edit comment =="
-curl -s -X PATCH "$BASE_URL/api/comments/$COMMENT_ID" \
+curl -s -X PUT "$BASE_URL/api/comments/$COMMENT_ID" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"text":"Edited comment"}' | jq .

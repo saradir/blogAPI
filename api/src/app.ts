@@ -3,6 +3,7 @@ import passport from "./config/passport"
 import jwt from "jsonwebtoken";
 import { userRouter } from "./routers/userRouter";
 import { postRouter } from "./routers/postRouter";
+import { commentRouter } from "./routers/commentRouter";
 import { localLogin } from "./middleware/localLogin";
 import { errorHandler } from "./middleware/errorMiddleware";
 
@@ -23,6 +24,7 @@ app.get("/", (_req, res) => {
 
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);
+app.use("/api/comments", commentRouter);
 
 
 app.get('/api', (req, res) => {
