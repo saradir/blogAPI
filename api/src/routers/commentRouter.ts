@@ -9,5 +9,5 @@ commentRouter.param('commentId', loadComment);
 commentRouter.get("/", commentController.index);
 commentRouter.get("/:commentId", commentController.show);
 commentRouter.post("/",jwtAuth, commentController.create);
-commentRouter.put("/:commentId",jwtAuth, authorize.requireCommentOwner, commentController.edit);
-commentRouter.delete("/:commentId",jwtAuth, authorize.requireCommentOwner, commentController.remove);
+commentRouter.put("/:commentId",jwtAuth, authorize.canModifyComment, commentController.edit);
+commentRouter.delete("/:commentId",jwtAuth, authorize.canModifyComment, commentController.remove);

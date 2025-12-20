@@ -35,7 +35,7 @@ export async function create(req, res, next){
             data: {
                 text: req.body.text,
                 userId: req.user.id,
-                postId: Number(req.params.postId)
+                postId: req.post.id
             }
         });
         return res.status(201).json({
