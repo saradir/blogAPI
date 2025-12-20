@@ -96,3 +96,4 @@ curl -s -X DELETE "$BASE_URL/api/posts/$POST_ID" \
 
 echo
 echo "== Done =="
+read -p "Press Enter to exit..."

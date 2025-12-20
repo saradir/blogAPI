@@ -3,8 +3,11 @@ import { prisma } from '../lib/prisma';
 
 
 export async function index(req, res, next){
+
+   
     try{
         const posts = await prisma.post.findMany({
+            where: req.user.isAdmin? {} : {isDraft: false}, // exclude drafts if not admin
             orderBy: {createdAt: 'desc'},
             include: {user: {
                         select: {
@@ -21,30 +24,13 @@ export async function index(req, res, next){
     }
 }
 
-export async function show(req, res, next){
-    try{
-        const post = await prisma.post.findUnique({
-        where: {id: Number(req.params.postId)},
-        include: {user: {
-            select: { id: true, username: true}
-        }}
+export  function show(req, res, next){
+    return res.status(200).json({
+        success: true,
+        post: req.post
     });
-
-        if(!post){
-            return res.status(404).json({
-                success: false,
-                error: {code: "MISSING_POST", message: "Couldn't find post"}
-            });
-        }
-
-        return res.status(200).json({
-            success: true,
-            post
-        });
-    } catch(err){
-        next(err);
-    }
 }
+
 
 export async function create(req, res, next){
     try{

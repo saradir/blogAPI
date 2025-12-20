@@ -11,7 +11,18 @@ export const requireOwner = async (req, res, next) => {
 
 }
 
-export const requireAdmin = async (req, res, next) =>{
+export const requirePostAccess = (req, res, next) => {
+    if(req.post.isDraft && !req.user.isAdmin){
+        return res.status(403).json({
+            success: false,
+            error: {message: "Permission denied"}
+        });
+    }
+    return next();
+    
+}
+
+export const requireAdmin =  (req, res, next) =>{
     if(req.user.isAdmin) return next ();
 
     return res.status(403).json({
@@ -20,19 +31,14 @@ export const requireAdmin = async (req, res, next) =>{
     })
 }
 
-export const requireCommentOwner = async (req, res, next) => {
+export const requireCommentOwner = (req, res, next) => {
     
-    if(req.user.isAdmin) return next();
+    if((req.user.isAdmin) || (req.user.id === req.comment.userId)) return next();
 
-    const owner = await prisma.comment.findUnique({
-        where: {id: Number(req.params.commentId)}
-    });
-
-    if
 
     return res.status(403).json({
         success: false,
         message: "Unauthorized request"
-    })
+    });
 
 }
