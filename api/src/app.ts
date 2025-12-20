@@ -1,14 +1,17 @@
 import express from "express";
-import passport from "./config/passport"
+import cors from "cors";
+import passport from "./config/passport";
 import jwt from "jsonwebtoken";
 import { userRouter } from "./routers/userRouter";
 import { postRouter } from "./routers/postRouter";
 import { commentRouter } from "./routers/commentRouter";
 import { localLogin } from "./middleware/localLogin";
 import { errorHandler } from "./middleware/errorMiddleware";
+import { corsOptions } from "./config/corsOptions";
 
 const app = express();
 
+app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
