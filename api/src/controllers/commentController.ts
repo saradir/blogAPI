@@ -47,9 +47,32 @@ export async function create(req, res, next){
         next(err);
     }
 }
-export async function edit(req, res){
-    return;
+export async function edit(req, res, next){
+        
+    try{
+        const comment = await prisma.comment.update({
+            where: {id: req.comment.id},
+            data: {text: req.body.text}
+        });
+
+        return res.status(200).json({
+            success: true,
+            comment
+        });
+    } catch (err){
+        next(err);
+    }
+
 }
-export async function remove(req, res){
-    return;
+export async function remove(req, res, next){
+    try{
+        await prisma.comment.delete({
+            where: {id: req.comment.id}
+        });
+        return res.status(200).json({
+            success:true,
+        });
+    } catch(err){
+        next(err);
+    }
 }
