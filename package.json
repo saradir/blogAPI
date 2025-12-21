@@ -1,0 +1,26 @@
+{
+  "name": "blogapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"npm run dev --prefix api\" \"npm run dev --prefix public-client\""
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saradir/blogAPI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/saradir/blogAPI/issues"
+  },
+  "homepage": "https://github.com/saradir/blogAPI#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
