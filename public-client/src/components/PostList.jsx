@@ -1,8 +1,9 @@
+import { Post } from "./Post";
 function PostList({posts}) {
     return(
     <ul>
       {posts.map( post => (
-        <li key={post.id}>{post.title}</li>
+        <Post key={post.id} post={post} />
       ))}
     </ul>
     )
