@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import './App.css'
+import { Routes, Route } from 'react-router-dom';
 import PostList from './components/PostList';
+import PostPage from './components/PostPage';
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -18,13 +20,23 @@ function App() {
   if(loading){
     return <p>Loading...</p>
   }
-
   return (
-  <div>
-    <h1>Public Blog</h1>
-    <PostList posts={posts} />
-  </div>
-  )
+    <div>
+      <h1>Public Blog</h1>
+
+      <Routes>
+        <Route
+          path="/"
+          element={<PostList posts={posts} />}
+        />
+        <Route
+          path="/posts/:id"
+          element={<PostPage />}
+        />
+      </Routes>
+    </div>
+  );
+
  
 }
 
