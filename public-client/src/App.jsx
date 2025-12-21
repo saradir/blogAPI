@@ -30,7 +30,7 @@ function App() {
           element={<PostList posts={posts} />}
         />
         <Route
-          path="/posts/:id"
+          path="/posts/:postId"
           element={<PostPage />}
         />
       </Routes>
