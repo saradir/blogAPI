@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import CommentList from "./CommentList";
 export function Post({post}){
     return(
         <div className="post">
