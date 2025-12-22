@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import Comment from "./Comment";
 
 function CommentList({postId}){
         const [comments, setComments] = useState([]);
@@ -39,10 +39,8 @@ function CommentList({postId}){
         return(
             <ul>
                 {comments.map((comment => (
-                    <li key={comment.id}>
-                        
-                        {comment.text}
-                    </li>
+
+                    <Comment key={comment.id} comment={comment} />
                 )))}
             </ul>
         );
