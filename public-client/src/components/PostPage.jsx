@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import CommentList from "./CommentList";
-import { Post } from "./Post";
 function PostPage() {
 
     const { postId } = useParams();
