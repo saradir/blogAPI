@@ -9,25 +9,25 @@ function PostPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        let cancelled = false;
+        const controller = new AbortController();
 
         async function fetchPost() {
             try {
-                const response = await fetch(`http://localhost:3000/api/posts/${postId}`);
+                const response = await fetch(`http://localhost:3000/api/posts/${postId}`, {signal: controller.signal});
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const data = await response.json();
-                if (!cancelled) setPost(data.post);
+                setPost(data.post);
             } catch (err) {
-                if (!cancelled) setError(err.message);
+                if(err.name !== "AbortError") setError(err.message);
             } finally {
-                if (!cancelled) setLoading(false);
+                setLoading(false);
             }
         }
 
         if (postId) fetchPost();
 
         return () => {
-            cancelled = true;
+            controller.abort();
         };
     }, [postId]);
 
