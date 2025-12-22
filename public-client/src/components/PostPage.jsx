@@ -7,6 +7,9 @@ function PostPage() {
     const [post, setPost] = useState({});
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [showComments, setShowComments] = useState(false);
+    const toggleCommentView = () => setShowComments(v => !v);
+
 
     useEffect(() => {
         const controller = new AbortController();
@@ -34,20 +37,35 @@ function PostPage() {
         };
     }, [postId]);
 
+
+
   if (loading) return <p>Loading...</p>;
   
   if (error) return <p>Error: {error}</p>;
 
   return(
-     <div>
-        <p>{post?.title || "Untitled"}</p>
 
-        
-        
-        <CommentList postId={postId} />
+        <div className="content">
+            <article className="post">
+                <header className="post-header">
+                    <h2>{post.title}</h2>
+                    <span>{post.author}</span>
+                    <time>{new Date(post.createdAt).toLocaleDateString()}</time>
+                </header>
 
-        
-    </div>
+                <section className="post-content">
+                {post.text}
+                </section>
+
+                <footer className="post-footer">
+                    {post.updatedAt !== post.createdAt && <time>Updated: {post.updatedAt}</time>}
+                    <button onClick={toggleCommentView}>Show comments</button>
+                </footer>
+            </article>
+
+            {showComments && <CommentList postId={postId} />}
+
+        </div>
     );
 }
 
