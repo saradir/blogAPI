@@ -6,6 +6,8 @@ export function Post({post}){
             <Link to={`/posts/${post.id}`}>
                 {post.title}
             </Link>
+
+
         </div>
     )
 }
