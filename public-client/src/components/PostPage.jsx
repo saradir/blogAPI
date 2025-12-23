@@ -6,7 +6,7 @@ import "../styles/PostPage.css";
 function PostPage() {
 
     const { postId } = useParams();
-    const [post, setPost] = useState({});
+    const [post, setPost] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showComments, setShowComments] = useState(false);
@@ -41,7 +41,7 @@ function PostPage() {
 
 
 
-  if (loading) return <p>Loading...</p>;
+  if (loading || !post) return <p>Loading...</p>;
   
   if (error) return <p>Error: {error}</p>;
 

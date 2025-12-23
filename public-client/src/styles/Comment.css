@@ -1,0 +1,53 @@
+/* Comment list */
+
+.comments {
+  margin-top: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+/* Individual comment */
+
+.comment {
+  background: #fafafa;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border-left: 3px solid #ddd;
+
+}
+
+/* Header: author + date */
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.comment-header span {
+  font-weight: 500;
+}
+
+.comment-header time {
+  color: #888;
+}
+
+/* Comment body */
+
+.comment-content {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+  white-space: pre-wrap;
+}
+
+/* Footer: metadata / future actions */
+
+.comment-footer {
+  font-size: 0.75rem;
+  color: #777;
+  text-align: right;
+}

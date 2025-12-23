@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Comment from "./Comment";
+import "../styles/Comment.css";
 
 function CommentList({postId}){
         const [comments, setComments] = useState(null);
@@ -32,18 +33,18 @@ function CommentList({postId}){
         }, [postId]);
 
 
-        if(loading) return <p>Loading comments...</p>
+        if(loading || !comments) return <p>Loading comments...</p>
         if(error) return <p>Error loading comments: {error}</p>
         if(comments && comments.length === 0) return <p>No comments on this post yet</p>
 
         
         return(
-            <ul>
-                {comments?.map((comment => (
+            <ol>
+                {comments.map((comment) => (
 
-                    <Comment key={comment.id} comment={comment} />
-                )))}
-            </ul>
+                    <Comment key={comment.id} comment={comment}  />
+                ))}
+            </ol>
         );
 }
 
