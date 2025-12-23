@@ -1,0 +1,18 @@
+.discussion-controls button {
+  background: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+}
+
+.discussion-controls button:hover {
+  background: #eaeaea;
+}
+
+.discussion-controls{
+  padding-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

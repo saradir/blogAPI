@@ -4,6 +4,7 @@ import CommentList from "./CommentList";
 import "../styles/PostPage.css";
 import "../styles/CommentForm.css";
 import CommentForm from "./CommentForm";
+import { DiscussionControls } from "./DiscussionControls";
 
 function PostPage() {
 
@@ -75,8 +76,8 @@ function PostPage() {
                     {post.updatedAt !== post.createdAt && (
                     <time>Updated: {new Date(post.updatedAt).toLocaleDateString()}</time>
                     )}
-                    <button onClick={toggleCommentForm}>Write comment</button>
-                    <button disabled={post._count.comments === 0} onClick={toggleCommentView}>{showComments? 'Hide': 'Show'} comments ({post._count.comments})</button>
+
+                    <DiscussionControls commentCount={post._count.comments} toggleCommentView={toggleCommentView} toggleCommentForm={toggleCommentForm} showComments={showComments} />
                 </footer>
             </article>
 
