@@ -61,7 +61,7 @@ function PostPage() {
 
                 <footer className="post-footer">
                     {post.updatedAt !== post.createdAt && <time>Updated: {post.updatedAt}</time>}
-                    <button onClick={toggleCommentView}>Show comments</button>
+                    <button onClick={toggleCommentView}>{showComments? 'Hide': 'Show'} comments</button>
                 </footer>
             </article>
 

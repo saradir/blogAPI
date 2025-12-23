@@ -46,7 +46,12 @@ export async function loadPost(req, res, next, postId) {
             include: {
                 user: {
                     select:{
-                        id: true, username: true}}}
+                        id: true, username: true}
+                    },
+                _count: {
+                    select: {comments: true}
+                }
+            }
         });
 
         if(!post){
