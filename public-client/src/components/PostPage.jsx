@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import CommentList from "./CommentList";
 import "../styles/PostPage.css";
+import "../styles/CommentForm.css";
+import CommentForm from "./CommentForm";
 
 function PostPage() {
 
@@ -10,9 +12,19 @@ function PostPage() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showComments, setShowComments] = useState(false);
+    const [ showForm, setShowForm] = useState(false);
+    const [commentText, setCommentText] = useState('');
     const toggleCommentView = () => setShowComments(v => !v);
+    const toggleCommentForm = () => setShowForm(v => !v);
 
+    function handleChange(e){
+        setCommentText(e.target.value);
+    }
 
+    function handleSubmit(e){
+        e.preventDefault();
+        console.log(commentText);
+    }
     useEffect(() => {
         const controller = new AbortController();
 
@@ -60,12 +72,15 @@ function PostPage() {
                 </section>
 
                 <footer className="post-footer">
-                    {post.updatedAt !== post.createdAt && <time>Updated: {post.updatedAt}</time>}
-
+                    {post.updatedAt !== post.createdAt && (
+                    <time>Updated: {new Date(post.updatedAt).toLocaleDateString()}</time>
+                    )}
+                    <button onClick={toggleCommentForm}>Write comment</button>
                     <button disabled={post._count.comments === 0} onClick={toggleCommentView}>{showComments? 'Hide': 'Show'} comments ({post._count.comments})</button>
                 </footer>
             </article>
 
+            {showForm && <CommentForm handleChange={handleChange} handleSubmit={handleSubmit} text={commentText} />}
             {showComments && <CommentList postId={postId} />}
 
         </div>
