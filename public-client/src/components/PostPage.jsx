@@ -51,7 +51,7 @@ function PostPage() {
             <article className="post">
                 <header className="post-header">
                     <h2>{post.title}</h2>
-                    <span>{post.author}</span>
+                    <span>{post.user.username}</span>
                     <time>{new Date(post.createdAt).toLocaleDateString()}</time>
                 </header>
 

@@ -25,6 +25,8 @@ export async function index(req, res, next){
 }
 
 export  function show(req, res, next){
+
+
     return res.status(200).json({
         success: true,
         post: req.post

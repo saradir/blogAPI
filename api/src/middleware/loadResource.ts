@@ -12,7 +12,12 @@ export async function loadComment(req, res, next, commentId) {
 
     try{
         const comment = await prisma.comment.findUnique({
-            where: {id}
+            where: {id},
+            include: {
+                user: {
+                    select:{
+                        id: true, username: true}}}
+
         });
 
         if(!comment){
@@ -37,7 +42,11 @@ export async function loadPost(req, res, next, postId) {
 
     try{
         const post = await prisma.post.findUnique({
-            where: {id}
+            where: {id},
+            include: {
+                user: {
+                    select:{
+                        id: true, username: true}}}
         });
 
         if(!post){

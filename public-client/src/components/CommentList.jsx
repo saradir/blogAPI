@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Comment from "./Comment";
 
 function CommentList({postId}){
-        const [comments, setComments] = useState([]);
+        const [comments, setComments] = useState(null);
         const [error, setError] = useState(null);
         const [loading, setLoading] = useState(true);
 
@@ -34,11 +34,12 @@ function CommentList({postId}){
 
         if(loading) return <p>Loading comments...</p>
         if(error) return <p>Error loading comments: {error}</p>
-        if(comments.length === 0) return <p>No comments on this post yet</p>
+        if(comments && comments.length === 0) return <p>No comments on this post yet</p>
 
+        
         return(
             <ul>
-                {comments.map((comment => (
+                {comments?.map((comment => (
 
                     <Comment key={comment.id} comment={comment} />
                 )))}
