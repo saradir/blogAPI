@@ -1,0 +1,10 @@
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  width:80%
+}
+
+ol {
+    margin-top: 1.5rem;
+}
