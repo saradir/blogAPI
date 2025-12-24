@@ -1,8 +1,12 @@
+import { Link} from "react-router-dom";
+
 function PostLayout({post, children}){
     return(
         <article className="post">
             <header className="post-header">
-                <h2>{post.title}</h2>
+                <Link to={`/posts/${post.id}`}>
+                    <h2>{post.title}</h2>
+                </Link>
                 <span>{post.user.username}</span>
                 <time>{new Date(post.createdAt).toLocaleDateString()}</time>
             </header>

@@ -9,11 +9,16 @@ export async function index(req, res, next){
         const posts = await prisma.post.findMany({
             where: req.user?.isAdmin? {} : {isDraft: false}, // exclude drafts if not admin
             orderBy: {createdAt: 'desc'},
-            include: {user: {
-                        select: {
-                            id: true, username: true
-                        }
-                    }}
+            include: {
+                user: {
+                    select: {
+                        id: true, username: true
+                    }
+                },
+                    _count: {
+                        select: {comments: true}
+                    }
+            }
             });
         return res.json({
             success: true,
