@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import PostList from './components/PostList';
 import PostPage from './components/PostPage';
 import LoginForm from './components/LoginForm';
+import Navbar from './components/Navbar';
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -23,6 +24,7 @@ function App() {
   }
   return (
     <div>
+      <Navbar />
       <h1>Public Blog</h1> 
 
       <Routes>
