@@ -2,8 +2,6 @@ import { useState } from "react";
 
 function LoginForm(){
 
-
-    const [token, setToken] = useState(null);
     const [error, setError] = useState(null);
     const [submitting, setSubmitting] = useState(false);
 
@@ -24,7 +22,6 @@ function LoginForm(){
 
             const data = await response.json();
             if (!response.ok) {
-                console.log(data);
                 setError(data.message || "Login failed");
             
             return;
@@ -32,8 +29,6 @@ function LoginForm(){
 
 
             localStorage.setItem("token", data.token);
-
-            console.log("Login successful:", data.token);
         
             } catch (err) {
                 if(err.name !== "AbortError") setError(err.message);
@@ -49,7 +44,7 @@ function LoginForm(){
     
     return (
         <>
-        
+
             {error && <p>{error}</p>}
 
             <form onSubmit={onSubmit}>
