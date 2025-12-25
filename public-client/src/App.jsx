@@ -3,6 +3,7 @@ import './App.css'
 import { Routes, Route } from 'react-router-dom';
 import PostList from './components/PostList';
 import PostPage from './components/PostPage';
+import LoginForm from './components/LoginForm';
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -32,6 +33,11 @@ function App() {
         <Route
           path="/posts/:postId"
           element={<PostPage />}
+        />
+
+        <Route
+        path='/login'
+        element={<LoginForm />}
         />
       </Routes>
     </div>
