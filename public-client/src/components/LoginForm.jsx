@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
+import ErrorMessage from "./ErrorMessage";
 function LoginForm(){
 
+    const navigate = useNavigate();
     const [error, setError] = useState(null);
     const [submitting, setSubmitting] = useState(false);
 
@@ -26,9 +29,8 @@ function LoginForm(){
             
             return;
             }
-
-
             localStorage.setItem("token", data.token);
+            navigate("/");
         
             } catch (err) {
                 if(err.name !== "AbortError") setError(err.message);
@@ -45,7 +47,7 @@ function LoginForm(){
     return (
         <>
 
-            {error && <p>{error}</p>}
+            <ErrorMessage error={error} />
 
             <form onSubmit={onSubmit}>
                 <label htmlFor="username">Username:</label>
