@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import ErrorMessage from "./ErrorMessage";
+import "../styles/LoginForm.css"
 function LoginForm(){
 
     const navigate = useNavigate();
@@ -49,7 +50,7 @@ function LoginForm(){
 
             <ErrorMessage error={error} />
 
-            <form onSubmit={onSubmit}>
+            <form className="login-form" onSubmit={onSubmit}>
                 <label htmlFor="username">Username:</label>
                 <input type="text" id="username" name="username"></input>
 

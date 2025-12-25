@@ -1,15 +1,15 @@
 import { Link} from "react-router-dom";
-
-function Navbar(){
+import "../styles/Navbar.css"
+function Navbar({onLogout}){
     const isLoggedIn = localStorage.getItem('token');
 
     return(
-        <nav>
+        <nav className="navbar">
             <Link to={'/'}>Homepage</Link>
 
             {!isLoggedIn
             ? <Link to={'/login'}>Login</Link>
-            : <Link to={'/logout'}>Logout</Link>
+            : <button onClick={onLogout}>Logout</button>
         }
         </nav>
     )

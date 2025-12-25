@@ -1,0 +1,32 @@
+/* navbar.css */
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid #ddd;
+  background-color: #fafafa;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+.navbar button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: #333;
+  cursor: pointer;
+}
+
+.navbar button:hover {
+  text-decoration: underline;
+}

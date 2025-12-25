@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
 import './App.css'
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import PostList from './components/PostList';
 import PostPage from './components/PostPage';
 import LoginForm from './components/LoginForm';
 import Navbar from './components/Navbar';
 
+
 function App() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const navigate = useNavigate();
   useEffect(() =>{
     fetch("http://localhost:3000/api/posts")
     .then(res => res.json())
@@ -22,9 +23,14 @@ function App() {
   if(loading){
     return <p>Loading...</p>
   }
+
+  function handleLogout(){
+    localStorage.removeItem("token");
+    navigate("/");
+  }
   return (
     <div>
-      <Navbar />
+      <Navbar onLogout={handleLogout} />
       <h1>Public Blog</h1> 
 
       <Routes>

@@ -1,4 +1,4 @@
-
+import "../styles/ErrorMessage.css"
 function ErrorMessage({error}){
     return (
         error ? (
