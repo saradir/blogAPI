@@ -8,6 +8,7 @@ import { commentRouter } from "./routers/commentRouter";
 import { localLogin } from "./middleware/localLogin";
 import { errorHandler } from "./middleware/errorMiddleware";
 import { corsOptions } from "./config/corsOptions";
+import { sanitizeUser } from "./services/sanitizeUser";
 
 const app = express();
 
@@ -42,10 +43,12 @@ app.post('/api/login', localLogin, (req, res) => {
     id: req.user.id,
     email: req.user.email
   };
+  const user = sanitizeUser(req.user);
   jwt.sign(payload, process.env.JWT_SECRET, (error, token) => {
     return res.status(200).json({
       success: true,
-      token
+      token,
+      user
     });
   });
 });
