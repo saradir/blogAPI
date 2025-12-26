@@ -29,6 +29,8 @@ export function Post({post}){
         if (!isEditing) return;
 
         function handleClickOutside(e) {
+            if (e.button === 2) return;
+
             if (formRef.current && !formRef.current.contains(e.target)) {
             setIsEditing(false);
             setShowForm(false);
