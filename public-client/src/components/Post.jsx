@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import CommentList from "./CommentList";
 import PostLayout from "./PostLayout";
@@ -18,6 +18,34 @@ export function Post({post}){
     const [loading, setLoading] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState(null);
+    const [isEditing, setIsEditing] = useState(false); 
+    const [commentText, setCommentText] = useState('');
+    const [editingCommentId, setEditingCommentId] = useState('');
+    const formRef = useRef(null);
+    const commentCount = comments !== null ? comments.length : post._count.comments;
+
+
+    useEffect(() => {
+        if (!isEditing) return;
+
+        function handleClickOutside(e) {
+            if (formRef.current && !formRef.current.contains(e.target)) {
+            setIsEditing(false);
+            setShowForm(false);
+            setCommentText("");
+            setEditingCommentId("");
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [isEditing]);
+
+
+    // Handles text change in comment form
+    function handleCommentChange(e){
+        setCommentText(e.target.value);
+    }
 
 
     async function fetchComments(){
@@ -51,7 +79,9 @@ export function Post({post}){
         setSubmitting(true);
         setSubmitError(null);
         const token = getAuth().token;
-        
+        const url = isEditing
+        ? `${import.meta.env.VITE_API_SERVER}/posts/${post.id}/comments/${editingCommentId}`
+        : `${import.meta.env.VITE_API_SERVER}/posts/${post.id}/comments`
 
         if (!token) {
             setSubmitError("You must be logged in to comment");
@@ -59,14 +89,14 @@ export function Post({post}){
             return;
         }
         try{
-            const response = await fetch(`${import.meta.env.VITE_API_SERVER}/posts/${post.id}/comments`, {
-                method: "POST",
+            const response = await fetch(url, {
+                method: isEditing? "PUT" : "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    "text" : e.target.text.value            
+                    "text" : commentText            
                 })
             });
             
@@ -79,11 +109,15 @@ export function Post({post}){
             e.target.reset();
             setShowForm(false);
             setShowComments(true);
+
         
         }catch (err) {
             setSubmitError(err.message);
         } finally {
             setSubmitting(false);
+            setCommentText('');
+            setIsEditing(false);
+            setEditingCommentId('');
         }
 
     }
@@ -108,17 +142,32 @@ export function Post({post}){
         }
     }
 
+    async function handleEditComment(commentId, commentText){
+        setIsEditing(true);
+        setCommentText(commentText);
+        setShowForm(true);
+        setEditingCommentId(commentId);
+    }
+
     return(
         <div className="post">
             <PostLayout post={post}>               
-                <DiscussionControls commentCount={comments?.length || post._count.comments} toggleCommentView={toggleCommentView} toggleCommentForm={toggleCommentForm} showComments={showComments} />
+                <DiscussionControls commentCount={commentCount} toggleCommentView={toggleCommentView} toggleCommentForm={toggleCommentForm} showComments={showComments} />
             </PostLayout>
             {submitting && <p>Submitting comment...</p>}
-            {showForm && <CommentForm onSubmit={handleSubmitComment} error={submitError}   />}
+            {showForm && <CommentForm
+                onSubmit={handleSubmitComment}
+                error={submitError}
+                commentText={commentText}
+                onChange={handleCommentChange}
+                isEditing={isEditing}
+                formRef={formRef}
+                />
+            }
             {loading && <p>Loading comments...</p> }
             {error && <ErrorMessage error={error}/>}
 
-            {showComments && <CommentList comments={comments} onDelete={handleDeleteComment}/>}
+            {showComments && <CommentList comments={comments} onDelete={handleDeleteComment} onEdit={handleEditComment}/>}
                
         </div>
     );
