@@ -1,26 +1,29 @@
 import { useState } from "react";
+import ErrorMessage from "./ErrorMessage";
 
 
-function CommentForm(){
+function CommentForm({onSubmit, error}){
     const [commentText, setCommentText] = useState('');
     function handleChange(e){
     setCommentText(e.target.value)
     }
 
-    function handleSubmit(e){
-        e.preventDefault();
-        console.log(commentText);
-    }
-    return(
-        <form className="comment-form" onSubmit={handleSubmit}>
-            <h4 className="comment-form-title">Write a comment</h4>
-            <textarea
-            value={commentText}
-            onChange={handleChange}
-            />
 
-            <button type="submit" disabled={commentText.trim() === ''}>Add comment</button>
-        </form>
+    return(
+        <>
+            
+            <form className="comment-form" onSubmit={onSubmit}>
+                <h4 className="comment-form-title">Write a comment</h4>
+                <textarea
+                name="text"
+                value={commentText}
+                onChange={handleChange}
+                />
+
+                <button type="submit" disabled={commentText.trim() === ''}>Add comment</button>
+            </form>
+            {error && <ErrorMessage error={error} />}
+        </>
     );
 }
 

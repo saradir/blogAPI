@@ -2,50 +2,17 @@ import { useState, useEffect } from "react";
 import Comment from "./Comment";
 import "../styles/Comment.css";
 
-function CommentList({postId}){
-        const [comments, setComments] = useState(null);
-        const [error, setError] = useState(null);
-        const [loading, setLoading] = useState(true);
+function CommentList({comments}){
 
-        useEffect(() => {
-            const controller = new AbortController();
-            setLoading(true);
-            setError(null);
+    if(!comments || comments.length === 0) return <p>No comments on this post yet</p>   
+    return(
+        <ol>
+            {comments.map((comment) => (
 
-            async function fetchComments(){
-            try{
-                const response = await fetch(`http://localhost:3000/api/posts/${postId}/comments`, {signal:controller.signal});
-                if(!response.ok) throw new Error (`HTTP error! status: ${response.status}`);
-                const data = await response.json();
-                setComments(data.comments);
-            } catch (err){
-                 if(err.name !== "AbortError") setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        if(postId) fetchComments();
-         return () => {
-            controller.abort();
-        };
-
-        }, [postId]);
-
-
-        if(loading || !comments) return <p>Loading comments...</p>
-        if(error) return <p>Error loading comments: {error}</p>
-        if(comments && comments.length === 0) return <p>No comments on this post yet</p>
-
-        
-        return(
-            <ol>
-                {comments.map((comment) => (
-
-                    <Comment key={comment.id} comment={comment}  />
-                ))}
-            </ol>
-        );
+                <Comment key={comment.id} comment={comment}  />
+            ))}
+        </ol>
+    );
 }
 
 export default CommentList;

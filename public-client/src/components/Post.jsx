@@ -5,27 +5,101 @@ import CommentList from "./CommentList";
 import PostLayout from "./PostLayout";
 import DiscussionControls from "./DiscussionControls";
 import CommentForm from "./CommentForm";
+import ErrorMessage from "./ErrorMessage";
 
 
 export function Post({post}){
     const [showComments, setShowComments] = useState(false);
     const [ showForm, setShowForm] = useState(false);
-    const toggleCommentView = () => setShowComments(v => !v);
     const toggleCommentForm = () => setShowForm(v => !v);
+    const [comments, setComments] = useState(null);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState(null);
 
+
+    async function fetchComments(){
+            setLoading(true);
+            setError(null);
+            try{
+                const response = await fetch(`${import.meta.env.VITE_API_SERVER}/posts/${post.id}/comments`);
+                const data = await response.json();
+                if (!response.ok) {
+                    setError(data.error || "Failed to load comments");
+                    return;
+                }
+                setComments(data.comments);
+            } catch (err){
+                    if(err.name !== "AbortError") setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+    async function toggleCommentView(){
+        if (!showComments && comments === null) {
+            await fetchComments();
+        }
+        setShowComments(v => !v);
+
+    }
+
+    async function handleSubmitComment(e){
+        e.preventDefault();
+        setSubmitting(true);
+        setSubmitError(null);
+        const token = localStorage.getItem('token');
+        
+
+        if (!token) {
+            setSubmitError("You must be logged in to comment");
+            setSubmitting(false);
+            return;
+        }
+        try{
+            const response = await fetch(`${import.meta.env.VITE_API_SERVER}/posts/${post.id}/comments`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    "text" : e.target.text.value            
+                })
+            });
+            
+            const data = await response.json();
+            if (!response.ok) {
+                setSubmitError(data.message || "Posting comment failed");            
+            return;
+            }
+            fetchComments(); // re-fetch comments
+            e.target.reset();
+            setShowForm(false);
+            setShowComments(true);
+        
+        }catch (err) {
+            setSubmitError(err.message);
+            console.log(err);
+        } finally {
+            setSubmitting(false);
+        }
+
+    }
 
     return(
         <div className="post">
             <PostLayout post={post}>               
-                <DiscussionControls commentCount={post._count.comments} toggleCommentView={toggleCommentView} toggleCommentForm={toggleCommentForm} showComments={showComments} />
+                <DiscussionControls commentCount={comments?.length || post._count.comments} toggleCommentView={toggleCommentView} toggleCommentForm={toggleCommentForm} showComments={showComments} />
             </PostLayout>
+            {submitting && <p>Submitting comment...</p>}
+            {showForm && <CommentForm onSubmit={handleSubmitComment} error={submitError}   />}
+            {loading && <p>Loading comments...</p> }
+            {error && <ErrorMessage error={error}/>}
 
-            {showForm && <CommentForm   />}
-            {showComments && <CommentList postId={post.id} />}
-
-            
-
-
+            {showComments && <CommentList comments={comments}  />}
+               
         </div>
     );
 }

@@ -12,6 +12,7 @@ function LoginForm(){
     async function onSubmit(e){
         e.preventDefault();
         setSubmitting(true);
+        setError(null);
         try{
             const response = await  fetch(`${import.meta.env.VITE_API_SERVER}/login`, {
                 method: "POST",
