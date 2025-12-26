@@ -1,10 +1,13 @@
+import { getAuth } from "../util/authStorage";
 function Comment({comment}){
+
+    const auth = getAuth();
     return(
         <li>
             <article className="comment">
                 <header className="comment-header">
 
-                    <span>{comment.user.username} wrote:</span>
+                    <span>{comment.user.id === auth.userId? <i>You</i> : comment.user.username} wrote:</span>
                     <time>{new Date(comment.createdAt).toLocaleDateString()}</time>
                 </header>
 
