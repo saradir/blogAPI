@@ -1,0 +1,22 @@
+.comment-controls {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  padding: 0.25rem;
+  border-top: 1px solid #eee;
+}
+
+.comment-controls button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: 0.85rem;
+  color: #666;
+  cursor: pointer;
+}
+
+.comment-controls button:hover {
+  text-decoration: underline;
+  color: #333;
+}

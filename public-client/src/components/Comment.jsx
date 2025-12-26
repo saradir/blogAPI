@@ -1,4 +1,5 @@
 import { getAuth } from "../util/authStorage";
+import CommentControls from "./CommentControls";
 function Comment({comment}){
 
     const auth = getAuth();
@@ -23,6 +24,8 @@ function Comment({comment}){
                     )}
                     
                 </footer>
+
+                <CommentControls />
             </article>
         </li>
     );
