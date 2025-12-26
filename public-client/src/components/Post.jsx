@@ -167,7 +167,7 @@ export function Post({post}){
             {loading && <p>Loading comments...</p> }
             {error && <ErrorMessage error={error}/>}
 
-            {showComments && <CommentList comments={comments} onDelete={handleDeleteComment} onEdit={handleEditComment}/>}
+            {showComments && <CommentList comments={comments} onDelete={handleDeleteComment} onEdit={handleEditComment} editingCommentId={editingCommentId}/>}
                
         </div>
     );

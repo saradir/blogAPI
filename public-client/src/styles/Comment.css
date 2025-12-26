@@ -51,3 +51,13 @@
   color: #777;
   text-align: right;
 }
+
+.comment.editing{
+    background: #f9f9f9;
+
+}
+
+.editing-note{
+  font-style: italic;
+  color: #555;
+}
