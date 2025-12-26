@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { getAuth, setAuth } from "../util/authStorage";
 import ErrorMessage from "./ErrorMessage";
 import "../styles/LoginForm.css"
 function LoginForm(){
@@ -31,7 +31,8 @@ function LoginForm(){
             
             return;
             }
-            localStorage.setItem("token", data.token);
+            setAuth(data.token, data.user);
+            console.log(getAuth());
             navigate("/");
         
             } catch (err) {

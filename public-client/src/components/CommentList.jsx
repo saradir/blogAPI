@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import Comment from "./Comment";
 import "../styles/Comment.css";
 
