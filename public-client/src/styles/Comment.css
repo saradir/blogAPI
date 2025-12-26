@@ -52,10 +52,12 @@
   text-align: right;
 }
 
-.comment.editing{
-    background: #f9f9f9;
-
+.comment.editing {
+  background: #fffdf5;
+  border-left: 3px solid #e6d8a8;
 }
+
+
 
 .editing-note{
   font-style: italic;
