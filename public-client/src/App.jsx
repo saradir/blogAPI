@@ -5,7 +5,7 @@ import PostList from './components/PostList';
 import PostPage from './components/PostPage';
 import LoginForm from './components/LoginForm';
 import Navbar from './components/Navbar';
-
+import { clearAuth } from './util/authStorage';
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -25,7 +25,7 @@ function App() {
   }
 
   function handleLogout(){
-    localStorage.removeItem("token");
+    clearAuth();
     navigate("/");
   }
   return (

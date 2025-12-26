@@ -24,8 +24,9 @@ function Comment({comment}){
                     )}
                     
                 </footer>
-
-                <CommentControls />
+                
+                {(auth.isAdmin || comment.user.id === auth.userId ) && <CommentControls />}
+                
             </article>
         </li>
     );
