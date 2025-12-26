@@ -6,6 +6,7 @@ import PostLayout from "./PostLayout";
 import DiscussionControls from "./DiscussionControls";
 import CommentForm from "./CommentForm";
 import ErrorMessage from "./ErrorMessage";
+import { getAuth } from "../util/authStorage";
 
 
 export function Post({post}){
@@ -49,7 +50,7 @@ export function Post({post}){
         e.preventDefault();
         setSubmitting(true);
         setSubmitError(null);
-        const token = localStorage.getItem('token');
+        const token = getAuth().token;
         
 
         if (!token) {
@@ -81,11 +82,30 @@ export function Post({post}){
         
         }catch (err) {
             setSubmitError(err.message);
-            console.log(err);
         } finally {
             setSubmitting(false);
         }
 
+    }
+
+    async function handleDeleteComment(commentId){
+        try{
+            const response = await fetch(`${import.meta.env.VITE_API_SERVER}/posts/${post.id}/comments/${commentId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${getAuth().token}`
+                },
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                setError(data.message || "Failed to delete comment"); 
+                return;
+            }
+            fetchComments();
+        }catch (err) {
+            setError(err.message);
+        }
     }
 
     return(
@@ -98,7 +118,7 @@ export function Post({post}){
             {loading && <p>Loading comments...</p> }
             {error && <ErrorMessage error={error}/>}
 
-            {showComments && <CommentList comments={comments}  />}
+            {showComments && <CommentList comments={comments} onDelete={handleDeleteComment}/>}
                
         </div>
     );

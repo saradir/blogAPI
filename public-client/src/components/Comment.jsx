@@ -1,6 +1,6 @@
 import { getAuth } from "../util/authStorage";
 import CommentControls from "./CommentControls";
-function Comment({comment}){
+function Comment({comment, onDelete}){
 
     const auth = getAuth();
     return(
@@ -25,7 +25,7 @@ function Comment({comment}){
                     
                 </footer>
                 
-                {(auth.isAdmin || comment.user.id === auth.userId ) && <CommentControls />}
+                {(auth.isAdmin || comment.user.id === auth.userId ) && <CommentControls commentId={comment.id} onDelete={onDelete} />}
                 
             </article>
         </li>
