@@ -12,7 +12,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   useEffect(() =>{
-    fetch("http://localhost:3000/api/posts")
+    fetch(`${import.meta.env.VITE_API_SERVER}/api/posts`)
     .then(res => res.json())
     .then(data => {
       setPosts(data.posts);

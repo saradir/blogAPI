@@ -18,7 +18,7 @@ function PostPage() {
 
         async function fetchPost() {
             try {
-                const response = await fetch(`http://localhost:3000/api/posts/${postId}`, {signal: controller.signal});
+                const response = await fetch(`${import.meta.env.VITE_API_SERVER}/posts/${postId}`, {signal: controller.signal});
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const data = await response.json();
                 setPost(data.post);
