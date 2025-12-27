@@ -13,3 +13,4 @@ postRouter.post("/", jwtAuth, authorize.requireAdmin, postController.create);
 postRouter.put("/:postId",jwtAuth, authorize.requireAdmin, postController.edit);
 postRouter.delete("/:postId", jwtAuth, authorize.requireAdmin, postController.remove);
 postRouter.use("/:postId/comments", commentRouter);
+

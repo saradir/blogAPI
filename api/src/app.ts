@@ -9,6 +9,7 @@ import { localLogin } from "./middleware/localLogin";
 import { errorHandler } from "./middleware/errorMiddleware";
 import { corsOptions } from "./config/corsOptions";
 import { sanitizeUser } from "./services/sanitizeUser";
+import { adminRouter } from "./routers/adminRouter";
 
 const app = express();
 
@@ -25,7 +26,7 @@ app.get("/", (_req, res) => {
   res.send("Template working");
 });
 
-
+app.use("/api/admin", adminRouter);
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/comments", commentRouter);
