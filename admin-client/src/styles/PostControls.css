@@ -1,0 +1,41 @@
+.post-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-top: 1px solid #e5e5e5;
+  margin-top: 1rem;
+}
+
+.save-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.post-controls button {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background: #f8f8f8;
+  cursor: pointer;
+}
+
+.post-controls button:hover {
+  background: #eee;
+}
+
+/* primary action */
+.save-post-btn {
+  font-weight: 500;
+}
+
+/* secondary */
+.save-draft-btn {
+  color: #555;
+}
+
+/* mode toggle */
+.preview-btn {
+  min-width: 80px;
+}

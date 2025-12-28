@@ -1,0 +1,83 @@
+.content {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.post {
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 1.5rem;
+}
+
+.post-header {
+  border-bottom: 1px solid #eee;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+}
+
+.post-header h2 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.6rem;
+}
+
+.post-header span,
+.post-header time {
+  display: inline-block;
+  margin-right: 0.75rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.post-content {
+  line-height: 1.6;
+  font-size: 1rem;
+  margin: 1.5rem 0;
+  white-space: pre-wrap;
+}
+
+.post-footer {
+  border-top: 1px solid #eee;
+  padding-top: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post-footer span {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.post-footer button {
+  background: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+}
+
+.post-footer button:hover {
+  background: #eaeaea;
+}
+
+/* Comments */
+
+.commentsContainer {
+  margin-top: 1.5rem;
+}
+
+.commentsContainer ul {
+  list-style: none;
+  padding: 0;
+}
+
+.commentsContainer li {
+  border-bottom: 1px solid #eee;
+  padding: 0.75rem 0;
+}
+
+.commentsContainer li:last-child {
+  border-bottom: none;
+}

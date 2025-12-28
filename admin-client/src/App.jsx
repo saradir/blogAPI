@@ -1,10 +1,10 @@
-import { useState } from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css'
 import AdminPanel from './components/AdminPanel'
 import LoginForm from './components/LoginForm';
 import { clearAuth } from './util/authStorage';
 import Navbar from './components/Navbar';
+import PostPage from './components/PostPage';
 
 
 
@@ -30,6 +30,11 @@ function App() {
         <Route
           path="/admin"
           element={<AdminPanel />}
+        />
+
+        <Route
+          path="/admin/posts/:postId/edit"
+          element={<PostPage />}
         />
 
       </Routes>

@@ -17,7 +17,7 @@ function PostTable({posts}) {
 
         <tbody>
           {posts.map((post) => (
-            <PostRow post={post} />
+            <PostRow key={post.id} post={post} />
           ))}
         </tbody>
       </table>
