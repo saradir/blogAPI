@@ -1,0 +1,76 @@
+/* table shell */
+.post-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* header cells */
+.post-table th {
+  text-align: left;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #e5e5e5;
+  white-space: nowrap;
+}
+
+/* body rows */
+.post-table tbody tr {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+/* data cells */
+.post-table td {
+  padding: 0.5rem 1rem;
+  vertical-align: middle;
+}
+
+/* title column */
+.post-table td:first-child {
+  font-weight: 500;
+}
+
+/* actions column */
+.post-table td:last-child {
+  white-space: nowrap;
+}
+
+
+/* buttons inside table */
+.post-table button {
+  min-width: 80px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background: #f8f8f8;
+  cursor: pointer;
+}
+
+.post-table button:hover {
+  background: #eee;
+}
+
+/* status button */
+.status {
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+/* draft = actionable */
+.status.draft {
+  background: #fff7e6;
+  border-color: #e6c27a;
+  color: #8a6d1d;
+}
+
+.status.draft:hover {
+  background: #fff1d6;
+}
+
+/* published = passive */
+.status.published {
+  background: #f0f0f0;
+  border-color: #ccc;
+  color: #555;
+  cursor: default;
+}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAuth } from "../util/authStorage";
 import { useNavigate } from "react-router-dom";
-import PostList from "./PostList";
+import PostTable from "./PostTable";
 import ErrorMessage from "./ErrorMessage";
 import "../styles/AdminPanel.css"
 
@@ -59,7 +59,7 @@ function AdminPanel(){
                 <button>Show Drafts</button>
             </div>
 
-            <PostList posts={posts} />
+            <PostTable posts={posts} />
 
         </div>
     )
