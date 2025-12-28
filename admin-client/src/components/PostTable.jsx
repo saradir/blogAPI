@@ -1,4 +1,4 @@
-import Post from "./Post";
+import PostRow from "./PostRow";
 import "../styles/PostTable.css"
 
 function PostTable({posts}) {
@@ -17,7 +17,7 @@ function PostTable({posts}) {
 
         <tbody>
           {posts.map((post) => (
-            <Post post={post} />
+            <PostRow post={post} />
           ))}
         </tbody>
       </table>
