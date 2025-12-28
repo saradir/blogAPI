@@ -55,7 +55,8 @@ function AdminPanel(){
         <div className="admin-panel">
         <ErrorMessage error={error} />
             <div className="header">
-                <button>New Post</button>
+                
+                <button type="button" onClick={() => navigate("/admin/posts/new")}>New Post</button>
                 <button>Show Drafts</button>
             </div>
 

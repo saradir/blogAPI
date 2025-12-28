@@ -10,6 +10,7 @@ import PostControls from "./PostControls";
 
 function PostPage() {
     const { postId } = useParams();
+    const newPost = !postId;
     const [post, setPost] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -50,14 +51,15 @@ function PostPage() {
         if (postId){ 
             fetchPost();
         }
+        if(newPost) setLoading(false);
 
 
         return () => {
             controller.abort();
         };
-    }, [postId]);
+    }, [postId, newPost]);
 
-  if (loading || !post) return <p>Loading...</p>;
+  if (loading || (!post && !newPost)) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return(
@@ -71,7 +73,7 @@ function PostPage() {
                 isEditing={isEditing}
             />
 
-            {post && <PostLayout post={post} isEditing={isEditing} />}
+            <PostLayout post={post} isEditing={isEditing} />
             
 
         </div>

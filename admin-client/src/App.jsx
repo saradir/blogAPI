@@ -37,6 +37,11 @@ function App() {
           element={<PostPage />}
         />
 
+        <Route
+          path="/admin/posts/new"
+          element={<PostPage />}
+        />
+
       </Routes>
     </>
   );

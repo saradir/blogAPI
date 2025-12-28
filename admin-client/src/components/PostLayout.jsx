@@ -1,15 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link} from "react-router-dom";
 
 import "../styles/PostLayout.css";
 
 function PostLayout({post, isEditing, children}){
 
-    const [title, setTitle] = useState(post.title);
-    const [text, setText] = useState(post.text);
+    const [title, setTitle] = useState("");
+    const [text, setText] = useState("");
 
 
-        if(!isEditing){
+    useEffect(() => {
+        if (post) {
+            setTitle(post.title);
+            setText(post.text);
+        }
+        }, [post]);
+
+        if(post && !isEditing){
             return(
                 <article className="post">
                     <header className="post-header">
@@ -47,8 +54,8 @@ function PostLayout({post, isEditing, children}){
                             <input id="title" name="title" type="text" value={title? title: ''} onChange={(e) => setTitle(e.target.value)}></input>
                         </h2>
                 
-                        <span>{post.user.username}</span>
-                        <time>{new Date(post.createdAt).toLocaleDateString()}</time>
+                        <span>{post?.user.username}</span>
+                        <time>{new Date(post?.createdAt).toLocaleDateString()}</time>
                     </header>
 
                     <section className="post-content">
