@@ -3,6 +3,7 @@ import { getAuth } from "../util/authStorage";
 import { useNavigate } from "react-router-dom";
 import PostList from "./PostList";
 import ErrorMessage from "./ErrorMessage";
+import "../styles/AdminPanel.css"
 
 function AdminPanel(){
     const navigate = useNavigate();
@@ -31,7 +32,7 @@ function AdminPanel(){
             );
             const data = await response.json();
                 if (!response.ok) {
-                    setError(data.message || "Failed to delete comment"); 
+                    setError(data.message || "Failed to load posts"); 
                     return;
                 }
                 setPosts(data.posts);
@@ -51,7 +52,7 @@ function AdminPanel(){
 
     if(loading) return <p>Loading page...</p>
     return(
-        <>
+        <div className="admin-panel">
         <ErrorMessage error={error} />
             <div className="header">
                 <button>New Post</button>
@@ -60,7 +61,7 @@ function AdminPanel(){
 
             <PostList posts={posts} />
 
-        </>
+        </div>
     )
 }
 
