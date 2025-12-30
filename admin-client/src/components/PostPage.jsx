@@ -1,31 +1,70 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import "../styles/PostPage.css";
 import PostLayout from "./PostLayout";
 import ErrorMessage from "./ErrorMessage";
 import PostControls from "./PostControls";
-
+import { getAuth } from "../util/authStorage";
 
 
 function PostPage() {
     const { postId } = useParams();
-    const newPost = !postId;
     const [post, setPost] = useState(null);
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [isEditing, setIsEditing] = useState(true);
 
-    function handleSave(){
-        return
+    const [localPost, setLocalPost] = useState(null);
+    const navigate = useNavigate();
+
+    async function handleSave(mode){
+        try{
+            if(postId){
+                if(!postChanged()){
+                     setError("No changes to save");
+                     return;
+                }
+            }
+            const method = postId? "PUT" : "POST"
+            const url = postId? `${import.meta.env.VITE_API_SERVER}/posts/${postId}` : `${import.meta.env.VITE_API_SERVER}/posts`;
+            const payload = {title: localPost.title, text:localPost.text, isDraft:  mode === "draft"}
+            const response = await fetch(url, {
+                method,
+                headers:{
+                                    "Content-Type": "application/json",
+                                    "Authorization": `Bearer ${getAuth().token}`
+                                },
+                body: JSON.stringify(payload)
+                            });
+            const data = await response.json();
+            if(!response.ok){
+                 setError(data.message || "Saving failed");
+                 return;
+            }
+            setError(null);
+            navigate(`/admin/posts/${data.post.id}/edit`);
+        } catch(err){
+            setError(err.message);
+        }
     }
 
-    function handleSaveDraft(){
-        return
+    // Check if post has been changed
+    function postChanged(){
+        return localPost.text.trim() !== post.text.trim() || localPost.title.trim() !== post.title.trim();
     }
-
     function toggleEditMode(){
+        setError(null);
         setIsEditing(v => !v);
+    }
+    function handleChangeTitle(title){
+        setError(null);
+        setLocalPost(prev => ({ ...prev, title }));
+    }
+
+    function handleChangeText(text){
+        setError(null);
+        setLocalPost(prev => ({ ...prev, text }));
     }
 
 
@@ -41,6 +80,7 @@ function PostPage() {
                     setError(data.message);
                 }
                 setPost(data.post);
+                setLocalPost(data.post);
             } catch (err) {
                 if(err.name !== "AbortError") setError(err.message);
             } finally {
@@ -49,18 +89,22 @@ function PostPage() {
         }
 
         if (postId){ 
-            fetchPost();
+            setLoading(true);
+            fetchPost()
+            
         }
-        if(newPost) setLoading(false);
+        if(!postId){
+            setLocalPost({text:'', title: '', createdAt: new Date(), updatedAt: '', user: {username: getAuth().username}});
+        }
 
 
         return () => {
             controller.abort();
         };
-    }, [postId, newPost]);
+    }, [postId]);
 
-  if (loading || (!post && !newPost)) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return <p>Loading...</p>;
+ 
 
   return(
         
@@ -68,12 +112,11 @@ function PostPage() {
             {error && <ErrorMessage error={error} />}
             <PostControls
                 handleSave={handleSave}
-                handleSaveDraft={handleSaveDraft}
                 toggleEditMode={toggleEditMode}
                 isEditing={isEditing}
             />
 
-            <PostLayout post={post} isEditing={isEditing} />
+            {localPost && <PostLayout post={localPost} isEditing={isEditing} handleChangeText={handleChangeText} handleChangeTitle={handleChangeTitle} />}
             
 
         </div>

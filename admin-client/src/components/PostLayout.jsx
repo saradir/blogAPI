@@ -1,28 +1,16 @@
-import { useState, useEffect } from "react";
-import { Link} from "react-router-dom";
-
 import "../styles/PostLayout.css";
 
-function PostLayout({post, isEditing, children}){
-
-    const [title, setTitle] = useState("");
-    const [text, setText] = useState("");
+function PostLayout({post, isEditing, handleChangeText, handleChangeTitle}){
 
 
-    useEffect(() => {
-        if (post) {
-            setTitle(post.title);
-            setText(post.text);
-        }
-        }, [post]);
 
-        if(post && !isEditing){
+        if(!isEditing){
             return(
                 <article className="post">
                     <header className="post-header">
-                        <Link to={`/posts/${post.id}`}>
+                        
                             <h2>{post.title}</h2>
-                        </Link>
+                        
                         <span>{post.user.username}</span>
                         <time>{new Date(post.createdAt).toLocaleDateString()}</time>
                     </header>
@@ -36,8 +24,6 @@ function PostLayout({post, isEditing, children}){
                         <time>Updated: {new Date(post.updatedAt).toLocaleDateString()}</time>
                         )}
 
-                    {children}    
-
                     </footer>
             </article>
             );
@@ -45,21 +31,23 @@ function PostLayout({post, isEditing, children}){
 
         if(isEditing){
             return(
+
+                
                 <form className="post form">
                     <header className="post-header">
                 
 
                         <h2 className="post-title">
                             <label htmlFor="title">Title: </label>
-                            <input id="title" name="title" type="text" value={title? title: ''} onChange={(e) => setTitle(e.target.value)}></input>
+                            <input id="title" name="title" type="text" value={post.title} onChange={(e) => handleChangeTitle(e.target.value)}></input>
                         </h2>
                 
-                        <span>{post?.user.username}</span>
-                        <time>{new Date(post?.createdAt).toLocaleDateString()}</time>
+                        <span>{post.user.username}</span>
+                        <time>{new Date(post.createdAt).toLocaleDateString()}</time>
                     </header>
 
                     <section className="post-content">
-                        <textarea rows={15} id="text" name="text" value={text? text : ""} onChange={(e) => setText(e.target.value)}></textarea>
+                        <textarea rows={15} id="text" name="text" value={post.text} onChange={(e) => handleChangeText(e.target.value)}></textarea>
                     </section>
 
                 </form>

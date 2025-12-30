@@ -3,6 +3,7 @@
 export function setAuth(token, user){
         localStorage.setItem("token", token);
         localStorage.setItem("userId", user.id);
+        localStorage.setItem("username", user.username);
         localStorage.setItem("isAdmin", user.isAdmin);
 }
 
@@ -10,12 +11,13 @@ export function getAuth(){
 
     const userId = Number(localStorage.getItem("userId"));
     const isAdmin = localStorage.getItem("isAdmin") === "true";
+    const username = localStorage.getItem("username");
     return(
         {
             token: localStorage.getItem("token"),
             userId,
-            isAdmin
-
+            isAdmin,
+            username
             }
     );
 }
