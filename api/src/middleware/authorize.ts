@@ -1,5 +1,4 @@
-import { prisma } from "../lib/prisma"
-
+import passport from "../config/passport";
 export const requireOwner = async (req, res, next) => {
     
     if(req.user.isAdmin || (req.user.id === Number(req.params.userId))) return next();
@@ -12,14 +11,20 @@ export const requireOwner = async (req, res, next) => {
 }
 
 export const requirePostAccess = (req, res, next) => {
-    if(req.post.isDraft && !req.user.isAdmin){
-        return res.status(403).json({
-            success: false,
-            error: {message: "Permission denied"}
-        });
-    }
-    return next();
+    if(!req.post.isDraft)  return next ();
+    passport.authenticate("jwt", { session: false }, (err, user, info) => {
+        if (err) return next(err);
     
+        if (!user) {
+          return res.status(401).json({
+            success: false,
+            message: info?.message || "Invalid or missing token"
+          });
+        }
+    
+        req.user = user;
+        next();
+      })(req, res, next);    
 }
 
 export const requireAdmin =  (req, res, next) =>{
