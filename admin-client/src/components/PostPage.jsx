@@ -18,6 +18,50 @@ function PostPage() {
     const [localPost, setLocalPost] = useState(null);
     const navigate = useNavigate();
 
+
+
+    useEffect(() => {
+        const controller = new AbortController();
+
+        async function fetchPost() {
+            
+            try {
+                const response = await fetch(`${import.meta.env.VITE_API_SERVER}/posts/${postId}`, {
+                    signal: controller.signal,
+                    headers:{
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${getAuth().token}`
+                    },
+                });
+                const data = await response.json();
+                if (!response.ok){
+                    setError(data.message);
+                }
+                
+                setPost(data.post);
+                setLocalPost(data.post);
+            } catch (err) {
+                if(err.name !== "AbortError") setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        if (postId){ 
+            setLoading(true);
+            fetchPost();
+            
+        }
+        if(!postId){
+            setLocalPost({text:'', title: '', createdAt: new Date(), updatedAt: '', user: {username: getAuth().username}});
+        }
+
+
+        return () => {
+            controller.abort();
+        };
+    }, [postId]);
+
     async function handleSave(mode){
         try{
             if(postId){
@@ -29,6 +73,8 @@ function PostPage() {
             const method = postId? "PUT" : "POST"
             const url = postId? `${import.meta.env.VITE_API_SERVER}/posts/${postId}` : `${import.meta.env.VITE_API_SERVER}/posts`;
             const payload = {title: localPost.title, text:localPost.text, isDraft:  mode === "draft"}
+            console.log(payload)
+            console.log(url)
             const response = await fetch(url, {
                 method,
                 headers:{
@@ -68,41 +114,7 @@ function PostPage() {
     }
 
 
-    useEffect(() => {
-        const controller = new AbortController();
-
-        async function fetchPost() {
-            
-            try {
-                const response = await fetch(`${import.meta.env.VITE_API_SERVER}/posts/${postId}`, {signal: controller.signal});
-                const data = await response.json();
-                if (!response.ok){
-                    setError(data.message);
-                }
-                setPost(data.post);
-                setLocalPost(data.post);
-            } catch (err) {
-                if(err.name !== "AbortError") setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        if (postId){ 
-            setLoading(true);
-            fetchPost()
-            
-        }
-        if(!postId){
-            setLocalPost({text:'', title: '', createdAt: new Date(), updatedAt: '', user: {username: getAuth().username}});
-        }
-
-
-        return () => {
-            controller.abort();
-        };
-    }, [postId]);
-
+    
   if (loading) return <p>Loading...</p>;
  
 
