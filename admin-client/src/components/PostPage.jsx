@@ -65,7 +65,7 @@ function PostPage() {
     async function handleSave(mode){
         try{
             if(postId){
-                if(!postChanged()){
+                if(!postChanged() && !localPost.isDraft){
                      setError("No changes to save");
                      return;
                 }
