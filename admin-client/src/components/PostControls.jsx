@@ -1,11 +1,14 @@
 import "../styles/PostControls.css"
 
-function PostControls({toggleEditMode, isEditing, handleSave}){
+function PostControls({toggleEditMode, isEditing, handleSave, isDraft}){
+
+    const saveBtnTxt = isDraft? "Save & Publish" : "Save Changes";
+
     return(
         <div className="post-controls">
             <div className="save-buttons">
-                <button type="button" className="save-post-btn" onClick={() => handleSave("publish")}>Save&Publish</button>
-                <button type="button" className="save-draft-btn" onClick={() => handleSave("draft")}>Save as Draft</button>
+                <button type="button" className="save-post-btn" onClick={() => handleSave("publish")}>{saveBtnTxt}</button>
+                <button type="button" className="save-draft-btn" disabled={!isDraft} onClick={() => handleSave("draft")}>Save as Draft</button>
             </div>
 
             <div>

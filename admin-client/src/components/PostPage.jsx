@@ -16,7 +16,7 @@ function PostPage() {
     const [isEditing, setIsEditing] = useState(true);
 
     const [localPost, setLocalPost] = useState(null);
-    const navigate = useNavigate();
+
 
 
 
@@ -54,7 +54,7 @@ function PostPage() {
             
         }
         if(!postId){
-            setLocalPost({text:'', title: '', createdAt: new Date(), updatedAt: '', user: {username: getAuth().username}});
+            setLocalPost({text:'', title: '', createdAt: new Date(), updatedAt: '', user: {username: getAuth().username}, isDraft: true});
         }
 
 
@@ -66,7 +66,7 @@ function PostPage() {
     async function handleSave(mode){
         try{
             if(postId){
-                if(!postChanged() && !localPost.isDraft){
+                if(!postChanged()){
                      setMessage({text:"No changes to save", type: "warning"});
                      return;
                 }
@@ -95,7 +95,6 @@ function PostPage() {
                 setLocalPost(prev => ({...prev, isDraft: false }));
             }
             setPost(localPost);
-            // navigate(`/admin/posts/${data.post.id}/edit`); probably no need to navigate now
         } catch(err){
             setMessage({text: err.message, type: "error"});
         }
@@ -128,11 +127,12 @@ function PostPage() {
         
         <div className="content">
             {message && <MessageBox message={message} />}
-            <PostControls
+            {localPost && <PostControls
                 handleSave={handleSave}
                 toggleEditMode={toggleEditMode}
                 isEditing={isEditing}
-            />
+                isDraft={localPost.isDraft}
+            />}
 
             {localPost && <PostLayout post={localPost} isEditing={isEditing} handleChangeText={handleChangeText} handleChangeTitle={handleChangeTitle} />}
             
