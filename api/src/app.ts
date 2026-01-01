@@ -24,7 +24,7 @@ app.use(passport.initialize());
 
 
 app.get("/", (_req, res) => {
-  res.send("Template working");
+  res.send("Welcome to blogAPI");
 });
 
 app.use("/api/admin", adminRouter);
