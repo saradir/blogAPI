@@ -12,6 +12,7 @@ import { sanitizeUser } from "./services/sanitizeUser";
 import { adminRouter } from "./routers/adminRouter";
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: false }));
@@ -56,7 +57,7 @@ app.post('/api/login', localLogin, (req, res) => {
 
 app.use(errorHandler);
 
-app.listen(3000, () => console.log('Server started on 3000'));
+app.listen(PORT, () => console.log(`Server started on ${PORT}`));
 
 export default app;
 
