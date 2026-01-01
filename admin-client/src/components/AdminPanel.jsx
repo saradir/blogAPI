@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { getAuth } from "../util/authStorage";
 import { useNavigate } from "react-router-dom";
 import PostTable from "./PostTable";
-import ErrorMessage from "./ErrorMessage";
+import MessageBox from "./MessageBox";
 import "../styles/AdminPanel.css"
 
 function AdminPanel(){
     const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [message, setmessage] = useState(null);
     
 
 
@@ -17,7 +17,7 @@ function AdminPanel(){
     useEffect(() => {
 
         async function fetchPosts(){
-        setError(null);
+        setmessage(null);
         setLoading(true);
         try{
             const response = await fetch(`${import.meta.env.VITE_API_SERVER}/admin/posts`,{
@@ -32,12 +32,12 @@ function AdminPanel(){
             );
             const data = await response.json();
                 if (!response.ok) {
-                    setError(data.message || "Failed to load posts"); 
+                    setmessage(data.message || "Failed to load posts"); 
                     return;
                 }
                 setPosts(data.posts);
         }catch (err) {
-            setError(err.message);
+            setmessage(err.message);
         }finally{
             setLoading(false);
         }
@@ -53,7 +53,7 @@ function AdminPanel(){
     if(loading) return <p>Loading page...</p>
     return(
         <div className="admin-panel">
-        <ErrorMessage error={error} />
+        <MessageBox message={message} />
             <div className="header">
                 
                 <button type="button" onClick={() => navigate("/admin/posts/new")}>New Post</button>

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 import "../styles/PostPage.css";
 import PostLayout from "./PostLayout";
-import ErrorMessage from "./ErrorMessage";
+import MessageBox from "./MessageBox";
 import PostControls from "./PostControls";
 import { getAuth } from "../util/authStorage";
 
@@ -11,7 +11,7 @@ import { getAuth } from "../util/authStorage";
 function PostPage() {
     const { postId } = useParams();
     const [post, setPost] = useState(null);
-    const [error, setError] = useState(null);
+    const [message, setMessage] = useState(null); // message: {text: string, type:error | warning | success}
     const [loading, setLoading] = useState(false);
     const [isEditing, setIsEditing] = useState(true);
 
@@ -35,13 +35,14 @@ function PostPage() {
                 });
                 const data = await response.json();
                 if (!response.ok){
-                    setError(data.message);
+                    setMessage({text: data.message, type: "error"});
+                    return;
                 }
                 
                 setPost(data.post);
                 setLocalPost(data.post);
             } catch (err) {
-                if(err.name !== "AbortError") setError(err.message);
+                if(err.name !== "AbortError") setMessage({text: err.message, type:"error"});
             } finally {
                 setLoading(false);
             }
@@ -66,15 +67,13 @@ function PostPage() {
         try{
             if(postId){
                 if(!postChanged() && !localPost.isDraft){
-                     setError("No changes to save");
+                     setMessage({text:"No changes to save", type: "warning"});
                      return;
                 }
             }
             const method = postId? "PUT" : "POST"
             const url = postId? `${import.meta.env.VITE_API_SERVER}/posts/${postId}` : `${import.meta.env.VITE_API_SERVER}/posts`;
             const payload = {title: localPost.title, text:localPost.text, isDraft:  mode === "draft"}
-            console.log(payload)
-            console.log(url)
             const response = await fetch(url, {
                 method,
                 headers:{
@@ -85,13 +84,20 @@ function PostPage() {
                             });
             const data = await response.json();
             if(!response.ok){
-                 setError(data.message || "Saving failed");
+                 setMessage({text:data.message || "Saving failed", type: "error"});
                  return;
             }
-            setError(null);
-            navigate(`/admin/posts/${data.post.id}/edit`);
+            if(mode === "draft"){
+              setMessage({text: "Draft saved", type: "success"});
+              setLocalPost(prev => ({...prev, isDraft: true }));
+            }else{ 
+                setMessage({text:"Post published", type:"success"});
+                setLocalPost(prev => ({...prev, isDraft: false }));
+            }
+            setPost(localPost);
+            // navigate(`/admin/posts/${data.post.id}/edit`); probably no need to navigate now
         } catch(err){
-            setError(err.message);
+            setMessage({text: err.message, type: "error"});
         }
     }
 
@@ -100,16 +106,16 @@ function PostPage() {
         return localPost.text.trim() !== post.text.trim() || localPost.title.trim() !== post.title.trim();
     }
     function toggleEditMode(){
-        setError(null);
+        setMessage(null);
         setIsEditing(v => !v);
     }
     function handleChangeTitle(title){
-        setError(null);
+        setMessage(null);
         setLocalPost(prev => ({ ...prev, title }));
     }
 
     function handleChangeText(text){
-        setError(null);
+        setMessage(null);
         setLocalPost(prev => ({ ...prev, text }));
     }
 
@@ -121,7 +127,7 @@ function PostPage() {
   return(
         
         <div className="content">
-            {error && <ErrorMessage error={error} />}
+            {message && <MessageBox message={message} />}
             <PostControls
                 handleSave={handleSave}
                 toggleEditMode={toggleEditMode}
@@ -136,3 +142,4 @@ function PostPage() {
 }
 
 export default PostPage;
+ 

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth, setAuth } from "../util/authStorage";
-import ErrorMessage from "./ErrorMessage";
+import MessageBox from "./MessageBox";
 import "../styles/LoginForm.css"
 function LoginForm(){
 
     const navigate = useNavigate();
-    const [error, setError] = useState(null);
+    const [message, setmessage] = useState(null);
     const [submitting, setSubmitting] = useState(false);
 
     useEffect(() =>{
@@ -17,7 +17,7 @@ function LoginForm(){
     async function onSubmit(e){
         e.preventDefault();
         setSubmitting(true);
-        setError(null);
+        setmessage(null);
         try{
             const response = await  fetch(`${import.meta.env.VITE_API_SERVER}/login`, {
                 method: "POST",
@@ -32,7 +32,7 @@ function LoginForm(){
 
             const data = await response.json();
             if (!response.ok || !data.user.isAdmin) {
-                setError(data.message || "Login failed");
+                setmessage(data.message || "Login failed");
             
             return;
             }
@@ -41,7 +41,7 @@ function LoginForm(){
             navigate("/admin");
         
             } catch (err) {
-                if(err.name !== "AbortError") setError(err.message);
+                if(err.name !== "Abortmessage") setmessage(err.message);
             } finally {
                 setSubmitting(false);
             }
@@ -55,7 +55,7 @@ function LoginForm(){
     return (
         <>
 
-            <ErrorMessage error={error} />
+            <MessageBox message={message} />
 
             <form className="login-form" onSubmit={onSubmit}>
                 <label htmlFor="username">Username:</label>
