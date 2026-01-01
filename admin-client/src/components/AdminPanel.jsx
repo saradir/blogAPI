@@ -9,7 +9,8 @@ function AdminPanel(){
     const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [message, setmessage] = useState(null);
+    const [message, setMessage] = useState(null);
+    const [showDrafts, setShowDrafts] = useState(false);
     
 
 
@@ -17,7 +18,7 @@ function AdminPanel(){
     useEffect(() => {
 
         async function fetchPosts(){
-        setmessage(null);
+        setMessage(null);
         setLoading(true);
         try{
             const response = await fetch(`${import.meta.env.VITE_API_SERVER}/admin/posts`,{
@@ -32,12 +33,12 @@ function AdminPanel(){
             );
             const data = await response.json();
                 if (!response.ok) {
-                    setmessage(data.message || "Failed to load posts"); 
+                    setMessage({text: data.message || "Failed to load posts", type: "error"}); 
                     return;
                 }
                 setPosts(data.posts);
         }catch (err) {
-            setmessage(err.message);
+            setMessage({text: err.message || "Failed to load posts", type: "error"});
         }finally{
             setLoading(false);
         }
@@ -57,10 +58,10 @@ function AdminPanel(){
             <div className="header">
                 
                 <button type="button" onClick={() => navigate("/admin/posts/new")}>New Post</button>
-                <button>Show Drafts</button>
+                <button type="button" onClick={() => setShowDrafts(v => !v)}>Show Drafts</button>
             </div>
 
-            <PostTable posts={posts} />
+            <PostTable posts={posts} showDrafts={showDrafts} />
 
         </div>
     )

@@ -1,7 +1,11 @@
 import PostRow from "./PostRow";
 import "../styles/PostTable.css"
 
-function PostTable({posts}) {
+function PostTable({posts, showDrafts}) {
+
+    if(showDrafts){
+      posts = posts.filter(post => post.isDraft);
+    }
     return(
       <table className="post-table">
         <thead>
