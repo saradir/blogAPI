@@ -36,7 +36,7 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<PostList posts={posts} />}
+          element={posts && <PostList posts={posts} />}
         />
         <Route
           path="/posts/:postId"

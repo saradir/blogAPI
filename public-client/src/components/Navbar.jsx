@@ -8,10 +8,12 @@ function Navbar({onLogout}){
             <Link to={'/'}>Homepage</Link>
 
             {!isLoggedIn
-            ?   <div>
-                    <Link to={'/login'}>Login</Link>
-                    <Link to={'/signup'}>Sign up</Link>
-                </div>
+            ?   
+                    <>
+                        <Link to={'/login'}>Login</Link>
+                        <Link to={'/signup'}>Sign up</Link>
+                    </>
+                
             : <button onClick={onLogout}>Logout</button>
         }
         </nav>
