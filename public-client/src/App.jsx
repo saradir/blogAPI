@@ -6,6 +6,7 @@ import PostPage from './components/PostPage';
 import LoginForm from './components/LoginForm';
 import Navbar from './components/Navbar';
 import { clearAuth } from './util/authStorage';
+import SignupForm from './components/SignupForm';
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -47,6 +48,11 @@ function App() {
         path='/login'
         element={<LoginForm />}
         />
+
+        <Route
+          path='/signup'
+          element={<SignupForm />}
+          />
       </Routes>
     </div>
   );
