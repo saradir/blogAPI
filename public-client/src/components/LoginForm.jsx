@@ -54,10 +54,10 @@ function LoginForm(){
 
             <form className="login-form" onSubmit={onSubmit}>
                 <label htmlFor="username">Username:</label>
-                <input type="text" id="username" name="username"></input>
+                <input type="text" id="username" name="username" required></input>
 
                 <label htmlFor="password">Password:</label>
-                <input type="password" id="password" name="password"></input>
+                <input type="password" id="password" name="password" required></input>
 
                 <button type="submit" >Log in</button>
             </form>
