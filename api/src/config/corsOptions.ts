@@ -1,7 +1,10 @@
+
+
+const origins = (process.env.CORS_ORIGINS || "")
+                .split(",")
+                .map(s => (s.trim()))
+                .filter(s => s);
 export const corsOptions = {
-  origin: [
-    "https://blogapi-public.netlify.app",
-    "https://admin-client-blog.netlify.app"
-  ],
+  origin: origins,
   optionsSuccessStatus: 200
 };
