@@ -28,7 +28,7 @@ function SignupForm(){
         setSubmitting(true);
         setError(null);
         try{
-            const response = await  fetch(`${import.meta.env.VITE_API_SERVER}/users`, {
+            const response = await  fetch(`${import.meta.env.VITE_API_SERVER}/api/users`, {
                 method: "POST",
                   headers: {
                     "Content-Type": "application/json"
